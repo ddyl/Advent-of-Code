@@ -1,5 +1,5 @@
 """Answer for year 2022, day 1."""
-from .. import advent_of_code_requests as aoc_requests
+from advent_of_code import advent_of_code_requests as aoc_requests
 
 
 def get_input() -> list:
