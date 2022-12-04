@@ -85,14 +85,15 @@ def get_solution(year: str, day: str) -> None:
             name=".year_{year}.day_{day}".format(year=year.strip(), day=day.strip()),
             package="advent_of_code",
         )
-        answer = module.main()
+        solutions = module.main()
     except ModuleNotFoundError:
         click.secho("Sorry, there's no answer for that day yet :(", fg="red")
         return
     click.secho(
         "Output for Year {year}, Day {day}".format(year=year, day=day), fg="green"
     )
-    click.echo(answer)
+    for i, s in enumerate(solutions):
+        click.echo("Part {i} solution: {s}".format(i=i + 1, s=s))
 
 
 @click.command("set-cookie")

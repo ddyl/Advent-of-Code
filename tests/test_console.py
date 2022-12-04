@@ -48,6 +48,7 @@ def test_get_solution_prereq_does_not_fail_with_day(
     with patch.dict(sys.modules):
         # Mock a module
         sys.modules["advent_of_code.year_0.day_0"] = Mock()
+        sys.modules["advent_of_code.year_0.day_0"].main.return_value = (0, 0)
         runner.invoke(console.get_solution_prereq, input="0 \n 0")
         sys.modules["advent_of_code.year_0.day_0"].main.assert_called()
 
@@ -60,6 +61,7 @@ def test_get_solution_prereq_does_not_fail_with_year_and_date(
     with patch.dict(sys.modules):
         # Mock a module
         sys.modules["advent_of_code.year_0.day_0"] = Mock()
+        sys.modules["advent_of_code.year_0.day_0"].main.return_value = (0, 0)
         runner.invoke(console.get_solution_prereq, ["--year=0", "--day=0"])
         sys.modules["advent_of_code.year_0.day_0"].main.assert_called()
 
