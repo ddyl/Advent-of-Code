@@ -4,13 +4,16 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
+        exclude: test_inputs
       - id: trailing-whitespace
+        exclude: test_inputs
   - repo: local
     # Instead of pinning black to a specific version, use poetry
     # rev: "22.3.0"
     hooks:
       - id: black
         name: black
+        exclude: test_inputs
         entry: poetry run black
         language: system
         types: [python]
