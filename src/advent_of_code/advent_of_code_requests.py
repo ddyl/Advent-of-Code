@@ -26,7 +26,7 @@ def get_input(year: str, day: str) -> str:
     try:
         with requests.get(url, headers=headers) as response:
             response.raise_for_status()
-            return response.text.strip()
+            return response.text.rstrip()
     except SSLError as exc:
         raise SSLError(
             "Unable to access website due to SSL Error. Please refer to the "
