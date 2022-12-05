@@ -16,7 +16,7 @@ def mock_get_input(mocker: MockFixture) -> Mock:
     )
     mock = mocker.patch("advent_of_code.advent_of_code_requests.get_input")
     with open(input_file, "r") as f:
-        mock.return_value = f.read()
+        mock.return_value = f.read().strip()
     return mock
 
 
