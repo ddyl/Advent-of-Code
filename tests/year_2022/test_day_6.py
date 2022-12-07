@@ -1,4 +1,4 @@
-"""Test case for the year 2022, day 5."""
+"""Test case for the year 2022, day 6."""
 from os import getcwd, path
 from unittest.mock import Mock
 
