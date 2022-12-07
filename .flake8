@@ -1,7 +1,7 @@
 [flake8]
 select = ANN,B,B9,BLK,C,D,DAR,E,F,I,S,W
 ; Ignore E203 (whitespace before ':') and W503 (line break before binary operator)
-ignore = E203, W503, E501, ANN101
+ignore = E203, W503, E501, ANN101, B006
 max-complexity = 10
 max-line-length = 88
 ; Tell flake8-import-order what to consider local imports
