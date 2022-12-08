@@ -20,37 +20,43 @@ class Node:
         # If the current Node is root, None is returned
         self._parent: Optional[Node] = None
 
-    def get_node_name(self) -> str:
+    @property
+    def node_name(self) -> str:
         """Returns the current node's name."""
         return self._node_name
 
-    def get_node_type(self) -> str:
+    @property
+    def node_type(self) -> str:
         """Returns the current node's type (file or dir)."""
         return self._node_type
 
-    def set_node_size(self, size: int) -> None:
-        """Sets the current node's size to the supplied value."""
-        self._node_size = size
-
-    def get_node_size(self) -> int:
+    @property
+    def node_size(self) -> int:
         """Returns the current node's size."""
         return self._node_size
 
-    def get_parent(self) -> Optional[Node]:
+    @node_size.setter
+    def node_size(self, size: int) -> None:
+        """Sets the current node's size to the supplied value."""
+        self._node_size = size
+
+    @property
+    def parent(self) -> Optional[Node]:
         """Returns the parent node."""
         return self._parent
+
+    @property
+    def children(self) -> dict[str, Node]:
+        """Returns the child nodes of the current node as a dictionary. The key is the\
+             node name, the value is the node itself."""
+        return self._node_children
 
     def add_child(self, node: Node) -> None:
         """Adds node as a child to the current node. Child nodes are stored\
              in dictionaries, where the name of the node is the key, and the node\
                  itself is the value."""
         node._parent = self
-        self._node_children[node.get_node_name()] = node
-
-    def get_children(self) -> dict[str, Node]:
-        """Returns the child nodes of the current node as a dictionary. The key is the\
-             node name, the value is the node itself."""
-        return self._node_children
+        self._node_children[node.node_name] = node
 
 
 def construct_tree_from_commands(commands: list[str]) -> Node:
@@ -76,10 +82,10 @@ def construct_tree_from_commands(commands: list[str]) -> Node:
                 elif ins[2] == "..":
                     # While technically the parent of the root node is None, this will
                     #  never happen with the given puzzle input
-                    parent_node = curr_node.get_parent()
+                    parent_node = curr_node.parent
                     curr_node = parent_node if parent_node is not None else curr_node
                 else:
-                    curr_node = curr_node.get_children()[ins[2]]
+                    curr_node = curr_node.children[ins[2]]
             elif ins[1] == "ls":
                 pass
         else:
@@ -108,14 +114,13 @@ def compute_dir_sizes(node: Node, max_size: int = 0, return_list: list = []) -> 
     Returns:
         list:  A list containing all directories smaller than the max_size.
     """
-    for c in node.get_children().values():
+    for c in node.children.values():
         compute_dir_sizes(c, max_size=max_size, return_list=return_list)
 
-    parent_node = node.get_parent()
+    parent_node = node.parent
     if parent_node is not None:
-        size = parent_node.get_node_size()
-        parent_node.set_node_size(size + node.get_node_size())
-        if node.get_node_type() == "dir" and node.get_node_size() <= max_size:
+        parent_node.node_size += node.node_size
+        if node.node_type == "dir" and node.node_size <= max_size:
             return_list.append(node)
 
     return return_list
@@ -132,7 +137,7 @@ def part_1_solution() -> tuple[int, Node]:
     commands = get_input()
     root_dir = construct_tree_from_commands(commands)
     nodes_below_max_size = compute_dir_sizes(root_dir, max_size=100000)
-    return sum([i.get_node_size() for i in nodes_below_max_size]), root_dir
+    return sum([i.node_size for i in nodes_below_max_size]), root_dir
 
 
 def part_2_solution(root_dir: Node) -> int:
@@ -146,7 +151,7 @@ def part_2_solution(root_dir: Node) -> int:
     Returns:
         int: The size of the smallest directory to delete.
     """
-    unused_memory = 70000000 - root_dir.get_node_size()
+    unused_memory = 70000000 - root_dir.node_size
     req_memory = 30000000
 
     dir_to_explore = [root_dir]
@@ -156,13 +161,13 @@ def part_2_solution(root_dir: Node) -> int:
         # Technically, pop() doesn't make this a true breadth-first-search. But this
         #  does give a faster runtime than pop(0), which is O(n).
         curr_dir = dir_to_explore.pop()
-        if unused_memory + curr_dir.get_node_size() >= req_memory:
+        if unused_memory + curr_dir.node_size >= req_memory:
             dir_to_delete.append(curr_dir)
-        for v in curr_dir.get_children().values():
-            if v.get_node_type() == "dir":
+        for v in curr_dir.children.values():
+            if v.node_type == "dir":
                 dir_to_explore.append(v)
 
-    return min([node.get_node_size() for node in dir_to_delete])
+    return min([node.node_size for node in dir_to_delete])
 
 
 def main() -> tuple:
