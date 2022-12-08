@@ -26,7 +26,7 @@ def test_solution_1(mock_get_input: Mock) -> None:
     assert day_7.part_1_solution()[0] == 95437
 
 
-def test_solution_2_test_1(mock_get_input: Mock) -> None:
+def test_solution_2(mock_get_input: Mock) -> None:
     """It verifies the second part with a test input."""
     assert day_7.part_2_solution(day_7.part_1_solution()[1]) == 24933642
 
