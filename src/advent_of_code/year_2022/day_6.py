@@ -1,6 +1,5 @@
 """My attempt at solving year 2022, day 6."""
 from collections import defaultdict
-from typing import Optional
 
 from advent_of_code import advent_of_code_requests as aoc_requests
 
@@ -10,22 +9,19 @@ def get_input() -> str:
     return aoc_requests.get_input("2022", "6").strip()
 
 
-def detect_distinct_char_sequence(scope: int, input: Optional[str] = None) -> int:
+def detect_distinct_char_sequence(scope: int) -> int:
     """This function will find the first sequence of characters in the input that are \
     distinct (scope determines how many characters must be in the sequence), and \
     return the end index of that sequence (which is indexed starting from 1).
 
     Args:
         scope (int): The number of characters in the distinct character sequence.
-        input (Optional[str]): The input text. Defaults to None, in which case the \
-         actual input from the Advent of Code challenge will be used.
 
     Returns:
         int: The end index of the distinct character sequence. Is indexed \
             starting from 1
     """
-    if input is None:
-        input = get_input()
+    input = get_input()
 
     # Use defaultdict so the values initialize with 0.
     # Keys are letters of the input.
